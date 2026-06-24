@@ -22,7 +22,7 @@ h1{max-width:980px;margin:18px 0 8px;font-size:clamp(48px,7vw,82px);line-height:
 .contact{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}.pill{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:9px 13px;color:var(--muted);font-size:13px}.pill strong{color:var(--ink)}
 section{padding:72px 0;border-top:1px solid var(--line)}.section-head{display:grid;grid-template-columns:150px 1fr;gap:34px;margin-bottom:30px}.no{padding-top:7px;color:var(--blue);font-size:13px;font-weight:900;letter-spacing:.13em}h2{margin:0 0 10px;font-size:clamp(30px,4vw,44px);line-height:1.16;letter-spacing:-.03em}.section-head p{margin:0;color:var(--muted);font-size:17px;max-width:820px}
 .profile-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.panel{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:var(--shadow)}.panel h3{margin:0 0 10px;font-size:22px}.panel p{margin:0;color:var(--muted)}.timeline{display:grid;gap:14px}.edu{border-left:3px solid var(--green);padding-left:14px}.edu b{display:block}.edu span{display:block;color:var(--muted);font-size:14px;margin-top:3px}.strengths{display:grid;gap:10px;margin-top:16px}.strength{background:var(--soft);border-radius:14px;padding:12px 13px;color:var(--muted);font-size:14px}.highlight{background:var(--gold-soft)}
-.project-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.card{background:var(--paper);border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;min-height:100%}.card img{width:100%;height:210px;object-fit:cover;background:#fff;border-bottom:1px solid var(--line)}.card-body{padding:22px}.tag{display:inline-block;color:var(--blue);font-size:12px;font-weight:900;letter-spacing:.12em;margin-bottom:10px}.card h3{font-size:23px;line-height:1.2;margin:0 0 10px}.card p{margin:0;color:var(--muted);font-size:15px}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.meta span{background:var(--soft);border-radius:999px;padding:6px 9px;color:var(--muted);font-size:12px}.card.active:hover{transform:translateY(-3px);transition:.18s ease}.card.pending{opacity:.72}.card.pending img{filter:saturate(.65)}
+.project-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.card{background:var(--paper);border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;min-height:100%}.card img{width:100%;height:210px;object-fit:cover;background:#fff;border-bottom:1px solid var(--line)}.card-visual{height:210px;background:linear-gradient(135deg,#eef2f6,#e3efe8);border-bottom:1px solid var(--line);padding:22px;display:grid;align-content:center;gap:10px}.card-visual b{font-size:34px;color:var(--navy);line-height:1}.card-visual span{display:inline-block;background:rgba(255,255,255,.74);border:1px solid var(--line);border-radius:999px;padding:6px 9px;color:var(--muted);font-size:12px;margin-right:6px;margin-top:6px}.card-body{padding:22px}.tag{display:inline-block;color:var(--blue);font-size:12px;font-weight:900;letter-spacing:.12em;margin-bottom:10px}.card h3{font-size:23px;line-height:1.2;margin:0 0 10px}.card p{margin:0;color:var(--muted);font-size:15px}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.meta span{background:var(--soft);border-radius:999px;padding:6px 9px;color:var(--muted);font-size:12px}.card.active:hover{transform:translateY(-3px);transition:.18s ease}.card.pending{opacity:.72}.card.pending img{filter:saturate(.65)}
 footer{padding:34px 0 52px;color:var(--muted);font-size:13px}
 @media(max-width:900px){.links{display:none}.section-head,.profile-grid,.project-grid{grid-template-columns:1fr}.hero{padding-top:62px}.card img{height:190px}}
 </style>
@@ -73,7 +73,7 @@ footer{padding:34px 0 52px;color:var(--muted);font-size:13px}
 <section id="projects">
   <div class="section-head">
     <div class="no">PROJECTS</div>
-    <div><h2>项目案例</h2><p>目前先放两个已整理项目。第三个项目内容确认后，会继续接入同一套页面结构。</p></div>
+    <div><h2>项目案例</h2><p>目前已整理三个项目，分别展示构型量化筛选、机器学习可靠性验证与 AI Agent 产品体验评估。</p></div>
   </div>
   <div class="project-grid">
     <a class="card active" href="projects/configuration-screening.html">
@@ -84,10 +84,10 @@ footer{padding:34px 0 52px;color:var(--muted);font-size:13px}
       <img src="assets/images/ml_training_prediction.png" alt="形成能预测与可靠性验证案例">
       <div class="card-body"><span class="tag">PROJECT 02</span><h3>形成能预测与可靠性验证</h3><p>将材料筛选需求转化为回归建模任务，并通过独立测试、训练测试对比与五折交叉验证判断模型边界。</p><div class="meta"><span>9546 样本</span><span>135 特征</span><span>R² 0.8902</span></div></div>
     </a>
-    <div class="card pending">
-      <img src="assets/images/orientation_distribution.png" alt="第三个项目待补充">
-      <div class="card-body"><span class="tag">PROJECT 03</span><h3>待补充项目</h3><p>第三个项目内容整理后接入，后续会保持同样的结构：任务、方法、证据、边界和个人贡献。</p><div class="meta"><span>待整理</span><span>可继续扩展</span></div></div>
-    </div>
+    <a class="card active" href="projects/ai-agent-evaluation.html">
+      <div class="card-visual"><b>AI Agent<br>Evaluation</b><div><span>评价框架</span><span>场景测试</span><span>证据边界</span></div></div>
+      <div class="card-body"><span class="tag">PROJECT 03</span><h3>AI Agent 产品体验评估</h3><p>将一次主观产品体验转化为评价标准、测试场景、独立证据和结论边界明确的黑盒评估。</p><div class="meta"><span>7 个维度</span><span>场景化测试</span><span>风险边界</span></div></div>
+    </a>
   </div>
 </section>
 <footer>Portfolio work in progress. 公开页暂不放手机号；如需展示可再确认后加入。</footer>
