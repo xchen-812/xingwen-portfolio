@@ -1,13 +1,13 @@
 # Xingwen Portfolio
 
-Personal portfolio website of Xingwen Chen.
+Personal portfolio website for AI testing, AI product experience, model evaluation, and data-driven problem solving.
 
-This project will present case studies in:
+## Local preview
 
-* Structured problem solving
-* Scientific data analysis
-* Model reliability evaluation
-* AI product testing and evaluation
-* Human–AI collaboration
+Open `index.html` directly, or run a local static server:
 
-The website is currently under development.
+```bash
+python -m http.server 8000
+```
+
+Then visit `http://localhost:8000`.

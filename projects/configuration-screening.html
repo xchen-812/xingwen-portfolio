@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陈幸雯作品集｜三维吸附构型量化筛选案例</title>
+<style>
+:root {
+  --bg:#f6f9ff;
+  --paper:#ffffff;
+  --ink:#102033;
+  --muted:#5f6f86;
+  --navy:#0f2f63;
+  --navy2:#245a9a;
+  --line:#d7e3f5;
+  --soft:#eef5ff;
+  --green:#245a9a;
+  --green-soft:#eaf3ff;
+  --red:#a9473d;
+  --red-soft:#eef5ff;
+  --gold:#315f9d;
+  --gold-soft:#eef6ff;
+  --blue-soft:#eaf3ff;
+  --shadow:0 16px 48px rgba(27,39,59,.07);
+  --max:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:Inter,"PingFang SC","Microsoft YaHei",Arial,sans-serif;
+  line-height:1.62;
+}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--max);margin:auto;padding:0 28px}
+.nav{
+  position:sticky;top:0;z-index:20;
+  background:rgba(246,249,255,.92);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(23,35,56,.09);
+}
+.nav-in{height:62px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{font-weight:800;color:var(--ink);text-decoration:none}
+.links{display:flex;gap:18px;font-size:13px;color:var(--muted)}
+.links a:hover{color:var(--navy)}
+.hero{padding:86px 0 46px}
+.eyebrow{font-size:13px;letter-spacing:.14em;color:var(--navy2);font-weight:800}
+h1{
+  font-size:clamp(42px,6vw,70px);line-height:1.08;letter-spacing:-.045em;
+  max-width:1080px;margin:18px 0 24px;
+}
+.lead{font-size:19px;color:var(--muted);max-width:990px;margin:0}
+.quick{
+  margin-top:34px;display:grid;grid-template-columns:1fr 74px 1fr 74px 1fr;
+  gap:10px;align-items:center;
+}
+.quick-card{
+  background:var(--paper);border:1px solid var(--line);
+  border-radius:23px;padding:22px;box-shadow:var(--shadow);
+}
+.quick-card strong{display:block;color:var(--navy);font-size:38px;line-height:1}
+.quick-card span{display:block;color:var(--muted);font-size:14px;margin-top:8px}
+.quick-arrow{font-size:32px;text-align:center;color:var(--navy2);font-weight:900}
+section{padding:82px 0;border-top:1px solid var(--line)}
+.section-head{display:grid;grid-template-columns:170px 1fr;gap:38px;margin-bottom:32px}
+.no{font-size:13px;letter-spacing:.13em;color:var(--navy2);font-weight:900;padding-top:8px}
+h2{font-size:clamp(30px,4vw,45px);line-height:1.17;letter-spacing:-.03em;margin:0 0 12px}
+.section-head p{color:var(--muted);font-size:17px;margin:0;max-width:900px}
+.panel{
+  background:var(--paper);border:1px solid var(--line);border-radius:28px;
+  padding:30px;box-shadow:var(--shadow);
+}
+.generation{
+  display:grid;grid-template-columns:220px 70px 1fr 70px 220px;align-items:center;gap:10px
+}
+.object{
+  border:1px solid var(--line);border-radius:23px;padding:24px;background:white;text-align:center
+}
+.object .icon{font-size:36px;margin-bottom:8px}
+.object b{display:block;font-size:19px}
+.object span{font-size:13px;color:var(--muted)}
+.factor-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.factor{background:var(--soft);border-radius:16px;padding:13px 15px}
+.factor b{display:block;font-size:14px}
+.factor span{font-size:12px;color:var(--muted)}
+.flow-arrow{font-size:30px;text-align:center;color:var(--navy2);font-weight:900}
+.funnel-grid{display:grid;grid-template-columns:1fr 370px;gap:28px;align-items:start}
+.funnel{display:flex;flex-direction:column;align-items:center}
+.stage{
+  position:relative;display:grid;grid-template-columns:130px 1fr;gap:18px;align-items:center;
+  min-height:120px;padding:20px 28px;background:var(--paper);border:1px solid var(--line);
+  box-shadow:0 10px 32px rgba(27,39,59,.05);
+}
+.stage:not(:last-child){margin-bottom:34px}
+.stage:not(:last-child)::after{
+  content:"";position:absolute;left:50%;bottom:-34px;width:2px;height:34px;background:var(--navy2)
+}
+.stage:not(:last-child)::before{
+  content:"▼";position:absolute;left:calc(50% - 8px);bottom:-45px;color:var(--navy2);z-index:2
+}
+.s1{width:100%;border-radius:25px}
+.s2{width:86%;border-radius:22px}
+.s3{width:70%;border-radius:20px;background:var(--green-soft);border-color:#c6d8f2}
+.s4{width:54%;border-radius:18px;background:var(--navy);color:white;border-color:var(--navy)}
+.stage .value{font-size:36px;font-weight:900;color:var(--navy)}
+.s4 .value{color:white}
+.stage h3{font-size:21px;margin:0 0 5px}
+.stage p{font-size:14px;color:var(--muted);margin:0}
+.s4 p{color:#dbe5f2}
+.split-title{font-weight:800;font-size:17px;margin-bottom:12px}
+.branches{display:grid;gap:11px}
+.branch{border-radius:18px;padding:17px;border:1px solid var(--line)}
+.branch b{display:block;font-size:17px;margin-bottom:4px}
+.branch span{font-size:13px;color:var(--muted)}
+.branch.gold{background:var(--gold-soft);border-color:#c6d8f2}
+.branch.red{background:var(--red-soft);border-color:#d7e3f5}
+.branch.blue{background:var(--blue-soft);border-color:#c6d8f2}
+.note{
+  margin-top:17px;border-left:3px solid var(--navy2);padding:10px 0 10px 16px;
+  color:var(--muted);font-size:14px
+}
+.systems{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.chart-card{
+  background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:13px;
+  box-shadow:var(--shadow)
+}
+.chart-card img{width:100%;height:auto;display:block;border-radius:13px;background:white}
+.chart-meta{padding:13px 8px 5px}
+.chart-meta b{font-size:18px}
+.chart-meta p{font-size:13px;color:var(--muted);margin:5px 0 0}
+.q-summary{margin-top:20px;display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+.q-logic{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:25px}
+.q-logic h3{font-size:24px;margin:0 0 15px}
+.q-row{display:grid;grid-template-columns:58px 1fr;gap:13px;padding:12px 0;border-top:1px solid var(--line)}
+.q-row:first-of-type{border-top:0}
+.qbadge{
+  height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-weight:900
+}
+.q1{background:var(--green-soft);color:var(--green)}
+.q2{background:var(--red-soft);color:var(--red)}
+.q3{background:var(--blue-soft);color:var(--navy2)}
+.q4{background:#ececec;color:#6e6e6e}
+.q-row b{display:block}
+.q-row span{font-size:13px;color:var(--muted)}
+.result-card{
+  background:var(--navy);color:white;border-radius:24px;padding:27px;
+  display:flex;flex-direction:column;justify-content:space-between
+}
+.result-card .big{font-size:64px;line-height:1;font-weight:900}
+.result-card h3{font-size:26px;line-height:1.2;margin:14px 0 8px}
+.result-card p{color:#d7e1ef;margin:0;font-size:15px}
+.evidence{
+  display:grid;grid-template-columns:1.15fr .85fr;gap:22px;align-items:start
+}
+.figure{
+  background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:14px;
+  box-shadow:var(--shadow)
+}
+.figure img{display:block;width:100%;height:auto;border-radius:14px}
+.findings{display:grid;gap:12px}
+.finding{background:var(--paper);border:1px solid var(--line);border-radius:19px;padding:18px}
+.finding b{display:block;margin-bottom:5px}
+.finding p{margin:0;color:var(--muted);font-size:14px}
+.finding.em{background:var(--green-soft);border-color:#c6d8f2}
+details{
+  margin-top:18px;background:var(--paper);border:1px solid var(--line);border-radius:22px;
+  overflow:hidden
+}
+summary{cursor:pointer;padding:18px 22px;font-weight:800}
+.detail-body{padding:0 18px 18px}
+.detail-grid{display:grid;gap:18px}
+.detail-img{background:white;border:1px solid var(--line);border-radius:18px;padding:10px}
+.detail-img img{width:100%;display:block;border-radius:10px}
+.detail-img p{color:var(--muted);font-size:14px;margin:10px 8px 5px}
+.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.thumb{background:white;border:1px solid var(--line);border-radius:18px;padding:10px}
+.thumb img{width:100%;aspect-ratio:4/3;object-fit:contain;display:block;border-radius:12px;background:#fff}
+.placeholder{
+  aspect-ratio:1/1;background:var(--soft);border:2px dashed #9fb4d4;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);font-size:12px
+}
+.thumb b{display:block;font-size:13px;margin-top:9px}
+.thumb span{font-size:11px;color:var(--muted)}
+.takeaway{
+  background:var(--navy);color:white;border-radius:30px;padding:36px;
+  display:grid;grid-template-columns:170px 1fr;gap:28px
+}
+.takeaway .no{color:#b9cdf0}
+.takeaway h2{font-size:33px}
+.takeaway p{margin:10px 0 0;color:#d9e3f0;font-size:17px}
+.capabilities{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+.cap{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.1);font-size:12px}
+footer{padding:34px 0 50px;color:var(--muted);font-size:13px}
+@media(max-width:900px){
+  .links{display:none}
+  .quick{grid-template-columns:1fr}
+  .quick-arrow{transform:rotate(90deg)}
+  .section-head,.funnel-grid,.q-summary,.evidence,.takeaway{grid-template-columns:1fr}
+  .section-head{gap:8px}
+  .generation{grid-template-columns:1fr}
+  .flow-arrow{transform:rotate(90deg)}
+  .systems{grid-template-columns:1fr}
+  .stage{width:100%!important;grid-template-columns:1fr}
+  .gallery{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="../index.html">陈幸雯 · Portfolio</a>
+    <div class="links">
+      <a href="../index.html">首页</a><a href="#context">任务背景</a>
+      <a href="#funnel">筛选漏斗</a>
+      <a href="#quadrant">四象限判定</a>
+      <a href="#evidence">代表性分析</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+<section class="hero" style="border-top:none">
+  <div class="eyebrow">CASE STUDY · 3D ADSORPTION CONFIGURATION SCREENING</div>
+  <h1>将三维吸附构型转化为可量化指标，并建立筛选标准保留代表结构</h1>
+  <p class="lead">为研究电解质分子在铜界面的潜在反应行为，我将难以直接比较的三维吸附构型转化为键长、界面距离、构型能量、锚点原子与取向等可量化指标，并据此筛选可进入后续高精度分析的代表构型。</p>
+  <div class="quick">
+    <div class="quick-card"><strong>2948</strong><span>初始三维吸附构型</span></div>
+    <div class="quick-arrow">→</div>
+    <div class="quick-card"><strong>1208</strong><span>低能且 Li 接近 Cu 的 Q1 构型</span></div>
+    <div class="quick-arrow">→</div>
+    <div class="quick-card"><strong>2</strong><span>公开展示的代表构型示例</span></div>
+  </div>
+</section>
+
+<section id="context">
+  <div class="section-head">
+    <div class="no">01 · TASK CONTEXT</div>
+    <div>
+      <h2>为什么一个分子会产生近 3000 个界面模型？</h2>
+      <p>一个电解质分子放到金属表面时，并不存在唯一放置方式。为了避免只研究某一种主观构型，需要系统采样影响界面状态的主要自由度。</p>
+    </div>
+  </div>
+  <div class="panel generation">
+    <div class="object">
+      <div class="icon">⬡ + ▤</div>
+      <b>电解质分子 + Cu 表面</b>
+      <span>界面反应研究对象</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="factor-grid">
+      <div class="factor"><b>不同表面吸附位点</b><span>分子放置在 Cu 表面的不同位置</span></div>
+      <div class="factor"><b>不同锚点原子</b><span>选择分子中不同原子靠近表面</span></div>
+      <div class="factor"><b>不同分子构象</b><span>覆盖内部弯曲与扭转状态</span></div>
+      <div class="factor"><b>不同吸附取向</b><span>平躺、倾斜、直立等方向</span></div>
+      <div class="factor" style="grid-column:1/-1"><b>可能的解离状态</b><span>初步优化后出现的断键或脱附行为</span></div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="object">
+      <div class="icon" style="font-weight:900;color:var(--navy)">2948</div>
+      <b>初步优化构型</b>
+      <span>需要进一步分层筛选</span>
+    </div>
+  </div>
+</section>
+
+<section id="funnel">
+  <div class="section-head">
+    <div class="no">02 · SCREENING FUNNEL</div>
+    <div>
+      <h2>先分流结构异常，再用物理条件逐步缩小主研究范围</h2>
+      <p>漏斗不是简单删除数据：不同异常被送往不同去向；进入主流程的构型则继续接受界面距离、能量和代表性分析。</p>
+    </div>
+  </div>
+
+  <div class="funnel-grid">
+    <div class="funnel">
+      <div class="stage s1">
+        <div class="value">2948</div>
+        <div><h3>初始三维吸附构型</h3><p>覆盖不同位点、锚点、构象、取向与可能的解离状态。</p></div>
+      </div>
+      <div class="stage s2">
+        <div class="value">STEP 1</div>
+        <div><h3>结构完整性与界面有效性检查</h3><p>依据 S–F、S–N 键长及构型与 Cu 表面的距离，识别断键与脱附。</p></div>
+      </div>
+      <div class="stage s3">
+        <div class="value">1208</div>
+        <div><h3>Q1：低能且 Li 接近 Cu</h3><p>在三个研究体系中，以 Li–Cu 距离和构型能量联合确定主研究对象。</p></div>
+      </div>
+      <div class="stage s4">
+        <div class="value">2</div>
+        <div><h3>公开构型示例</h3><p>从最终代表构型中仅展示两个示例，避免公开过多未发表结构细节。</p></div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="split-title">第一轮识别出的异常与去向</div>
+      <div class="branches">
+        <div class="branch gold"><b>284 个｜S–F 键断裂</b><span>不并入完整骨架的主筛选，但保留用于潜在解离机制分析。</span></div>
+        <div class="branch red"><b>4 个｜S–N 键断裂</b><span>不满足主研究对象的骨架完整性要求。</span></div>
+        <div class="branch red"><b>32 个｜构型脱附</b><span>所有原子距 Cu 表面较远，不再代表目标界面吸附状态。</span></div>
+      </div>
+      <div class="note">这些类别的统计口径需在最终公开前再核对是否互斥，因此当前版本不使用简单相减来标注中间总数。</div>
+    </aside>
+  </div>
+</section>
+
+<section id="quadrant">
+  <div class="section-head">
+    <div class="no">03 · FOUR-QUADRANT DECISION</div>
+    <div>
+      <h2>用 Li–Cu 距离与构型能量联合定义主研究对象</h2>
+      <p>距离回答“是否形成目标界面状态”，能量回答“该状态是否具有较高稳定性”。Q1 同时满足两项条件，因此进入后续代表性分析。</p>
+    </div>
+  </div>
+
+  <div class="systems">
+    <article class="chart-card">
+      <img src="../assets/images/cip1_quadrant.png" alt="CIP1 four-quadrant analysis">
+      <div class="chart-meta"><b>CIP1</b><p>Q1 = 420；Q3 = 68。低能构型中，以 Li 接近 Cu 的 Q1 为主研究对象。</p></div>
+    </article>
+    <article class="chart-card">
+      <img src="../assets/images/cip3_quadrant.png" alt="CIP3 four-quadrant analysis">
+      <div class="chart-meta"><b>CIP3</b><p>Q1 = 356；Q3 仅 4 个。该体系的低能构型高度集中于 Li 接近 Cu 的区域。</p></div>
+    </article>
+    <article class="chart-card">
+      <img src="../assets/images/cip5_quadrant.png" alt="CIP5 four-quadrant analysis">
+      <div class="chart-meta"><b>CIP5</b><p>Q1 = 432；Q3 = 224。除主路径外，还存在数量较多的低能远距离状态。</p></div>
+    </article>
+  </div>
+
+  <div class="q-summary">
+    <div class="q-logic">
+      <h3>四个区域分别意味着什么</h3>
+      <div class="q-row"><div class="qbadge q1">Q1</div><div><b>低能 + Li 接近 Cu</b><span>同时满足稳定性与目标界面状态，作为主研究对象。</span></div></div>
+      <div class="q-row"><div class="qbadge q2">Q2</div><div><b>高能 + Li 接近 Cu</b><span>界面位置符合，但热力学优先级较低。</span></div></div>
+      <div class="q-row"><div class="qbadge q3">Q3</div><div><b>低能 + Li 远离 Cu</b><span>作为不同界面状态保留观察，不与 Q1 混为同一类。</span></div></div>
+      <div class="q-row"><div class="qbadge q4">Q4</div><div><b>高能 + Li 远离 Cu</b><span>两项核心条件均不满足，研究优先级最低。</span></div></div>
+    </div>
+    <div class="result-card">
+      <div>
+        <div class="big">1208</div>
+        <h3>Q1 主研究构型</h3>
+        <p>CIP1 420 + CIP3 356 + CIP5 432</p>
+      </div>
+      <p>这里不是只选择“最低能”，而是同时要求 Li 足够靠近 Cu 表面，确保筛选结果对应目标界面状态。</p>
+    </div>
+  </div>
+</section>
+
+<section id="evidence">
+  <div class="section-head">
+    <div class="no">04 · REPRESENTATIVE ANALYSIS</div>
+    <div>
+      <h2>进一步分析锚点与接触模式，避免最终结果只代表一种吸附方式</h2>
+      <p>进入低能区域后，仍需判断分子通过哪个原子接近表面、是否存在不同配位方式，以及不同取向是否都得到覆盖。</p>
+    </div>
+  </div>
+
+  <div class="evidence">
+    <div class="figure"><img src="../assets/images/anchor_atom_analysis.png" alt="Anchor atom proportion and O/N contact distance"></div>
+    <div class="findings">
+      <div class="finding em"><b>Q1 整体以 O 锚定为主</b><p>CIP3 与 CIP5 的 Q1 构型均为 100% O 最近表面；CIP1 中 O 也占 94%。</p></div>
+      <div class="finding"><b>Q3 在部分体系中呈现 N 锚定转变</b><p>CIP1 与 CIP5 的 Q3 中，N 最近表面的比例分别达到 88% 与 86%。这说明 Q3 不只是“距离更远”，还伴随不同的分子朝向与接触方式。</p></div>
+      <div class="finding"><b>小样本不作过度解释</b><p>CIP3 的 Q3 仅有 4 个样本，因此不将其 100% O 比例视为稳定规律。</p></div>
+      <div class="finding"><b>接触距离作为补充证据</b><p>O 与 N 最近表面距离的分布不同，可辅助判断不同锚定模式是否真实存在。</p></div>
+    </div>
+  </div>
+
+  <details>
+    <summary>展开查看：第二近邻原子与配位模式证据</summary>
+    <div class="detail-body">
+      <div class="detail-img">
+        <img src="../assets/images/second_nearest_atom_analysis.png" alt="Second nearest FSI atom to Cu">
+        <p>CIP1 与 CIP5 的第二近邻几乎均为 O，表明双 O 接触模式占主导；CIP3 的第二近邻类型更分散，说明其接触构型更加多样。该结果可用于决定最终代表构型应覆盖哪些配位类别。</p>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>展开查看：平躺与直立取向的分布</summary>
+    <div class="detail-body">
+      <div class="detail-img">
+        <img src="../assets/images/orientation_distribution.png" alt="FSI orientation distribution">
+        <p>三个体系均以平躺取向为主，但仍存在数量不可忽略的直立取向。最终代表集不应只保留数量最多的平躺构型，也应覆盖具有不同界面几何特征的少数取向。</p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="no">05 · FINAL SET</div>
+    <div>
+      <h2>成果之二：代表构型如图所示</h2>
+      <p>为避免公开过多未发表结构细节，本页只展示两个代表构型示例，用于说明筛选结果的形态和界面接触特征。</p>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="gallery">
+      <div class="thumb"><img src="../assets/images/final_configuration_01.png" alt="代表构型示例 01"><b>代表构型示例 01</b><span>公开示例 · 界面吸附构型</span></div><div class="thumb"><img src="../assets/images/final_configuration_02.png" alt="代表构型示例 02"><b>代表构型示例 02</b><span>公开示例 · 界面吸附构型</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="takeaway">
+    <div class="no">CASE TAKEAWAY</div>
+    <div>
+      <h2>我将一个规模庞大、缺少唯一标准的三维结构问题，转化为由物理条件逐层约束、结果可解释且可复核的筛选流程。</h2>
+      <p>筛选过程中，我不仅压缩候选数量，也区分了主研究对象、潜在解离分支和特殊界面状态，并通过锚点、配位及取向分析控制最终结果的代表性。</p>
+      <div class="capabilities">
+        <span class="cap">大规模结构数据筛选</span>
+        <span class="cap">多指标联合判定</span>
+        <span class="cap">异常分流</span>
+        <span class="cap">证据驱动解释</span>
+        <span class="cap">结果边界控制</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>当前为构型筛选案例工作版本。后续将在同一网站中继续扩展机器学习与 AI Agent 评估案例。</footer>
+</main>
+</body>
+</html>

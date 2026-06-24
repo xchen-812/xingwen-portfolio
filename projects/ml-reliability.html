@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>机器学习案例 V5｜形成能预测与可靠性验证</title>
+<style>
+:root {
+  --bg:#f6f9ff;
+  --paper:#ffffff;
+  --ink:#102033;
+  --muted:#5f6f86;
+  --navy:#0f2f63;
+  --blue:#2563eb;
+  --green:#245a9a;
+  --green-soft:#eaf3ff;
+  --gold:#315f9d;
+  --gold-soft:#eef6ff;
+  --red:#3f5f8c;
+  --red-soft:#eef5ff;
+  --soft:#eef5ff;
+  --line:#d7e3f5;
+  --code:#111823;
+  --shadow:0 18px 52px rgba(15,47,99,.08);
+  --max:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:Inter,"PingFang SC","Microsoft YaHei",Arial,sans-serif;
+  line-height:1.62;
+}
+.wrap{max-width:var(--max);margin:auto;padding:0 28px}
+.top{
+  position:sticky;top:0;z-index:20;
+  background:rgba(246,249,255,.94);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(23,34,54,.08)
+}
+.top .wrap{height:62px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:800;color:var(--ink);text-decoration:none}
+.top small{color:var(--muted)}
+.hero{padding:92px 0 64px}
+.eyebrow{font-size:13px;font-weight:900;letter-spacing:.14em;color:var(--blue)}
+h1{
+  max-width:1080px;margin:18px 0 24px;
+  font-size:clamp(43px,6vw,70px);
+  line-height:1.08;letter-spacing:-.045em
+}
+h1 span{display:block}
+.lead{max-width:960px;margin:0;color:var(--muted);font-size:19px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:34px}
+.stat{
+  background:var(--paper);border:1px solid var(--line);border-radius:20px;
+  padding:21px;box-shadow:var(--shadow)
+}
+.stat strong{display:block;color:var(--navy);font-size:39px;line-height:1}
+.stat span{display:block;margin-top:8px;color:var(--muted);font-size:13px}
+
+section{padding:80px 0;border-top:1px solid var(--line)}
+.head{display:grid;grid-template-columns:165px 1fr;gap:38px;margin-bottom:32px}
+.no{padding-top:8px;color:var(--blue);font-size:13px;font-weight:900;letter-spacing:.13em}
+h2{margin:0 0 12px;font-size:clamp(31px,4vw,45px);line-height:1.16;letter-spacing:-.03em}
+.head p{max-width:900px;margin:0;color:var(--muted);font-size:17px}
+
+/* vertical decision workflow */
+.workflow{display:grid;gap:20px}
+.step{
+  position:relative;
+  display:grid;grid-template-columns:82px 1fr 330px;gap:18px;
+  align-items:start;background:var(--paper);
+  border:1px solid var(--line);border-radius:25px;
+  padding:24px;box-shadow:var(--shadow)
+}
+.step:not(:last-child)::after{
+  content:"▼";position:absolute;left:42px;bottom:-32px;color:var(--blue);font-size:18px
+}
+.step-index{
+  width:56px;height:56px;border-radius:18px;background:var(--navy);color:white;
+  display:flex;align-items:center;justify-content:center;font-weight:900
+}
+.step-main h3{margin:0 0 7px;font-size:23px}
+.step-main p{margin:0;color:var(--muted);font-size:14px}
+.judgment{
+  border-radius:18px;padding:17px 18px;background:var(--green-soft);
+  border:1px solid #c6d8f2
+}
+.judgment small{
+  display:block;margin-bottom:5px;color:var(--green);
+  font-size:11px;font-weight:900;letter-spacing:.12em
+}
+.judgment b{display:block;font-size:17px;line-height:1.36}
+.judgment p{margin:7px 0 0;color:var(--muted);font-size:13px}
+.step details{
+  grid-column:1 / -1;
+  margin-top:2px;border:1px solid var(--line);border-radius:17px;
+  overflow:hidden;background:#fbfaf7
+}
+.step summary{
+  cursor:pointer;padding:14px 17px;font-size:13px;font-weight:800;
+  list-style:none
+}
+.step summary::-webkit-details-marker{display:none}
+.code-grid{display:grid;grid-template-columns:1.25fr .75fr;border-top:1px solid var(--line)}
+pre{
+  margin:0;padding:18px;overflow:auto;background:var(--code);
+  color:#dce6f4;font:12.5px/1.65 "SFMono-Regular",Consolas,monospace
+}
+.code-note{padding:18px;background:var(--soft)}
+.code-note small{display:block;color:var(--blue);font-size:10px;font-weight:900;letter-spacing:.1em}
+.code-note b{display:block;margin:6px 0 7px;font-size:15px}
+.code-note p{margin:0;color:var(--muted);font-size:12.5px}
+
+/* model visualization */
+.model-visual{
+  grid-column:1 / -1;
+  width:100%;
+  margin-top:18px;
+  padding:26px 30px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:#fbfaf7;
+}
+.model-visual h4{margin:0 0 18px;font-size:19px}
+.model-flow{
+  display:grid;
+  grid-template-columns:minmax(220px,1.15fr) 70px minmax(130px,.75fr) 70px minmax(280px,1.35fr) 70px minmax(190px,1fr);
+  gap:0;
+  align-items:center;
+  width:100%;
+}
+.input-stack{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.input-box,.layer-box,.output-box{
+  border-radius:17px;padding:16px;text-align:center;border:1px solid var(--line)
+}
+.input-box{background:var(--green-soft);border-color:#c6d8f2}
+.input-box.struct{background:var(--gold-soft);border-color:#c6d8f2}
+.layer-stack{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+.layer-box{background:var(--soft)}
+.output-box{background:var(--navy);color:white;border-color:var(--navy)}
+.flow-arrow{text-align:center;color:var(--blue);font-size:29px;font-weight:900}
+.model-controls{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:9px;
+  margin-top:18px;
+}
+.control-chip{
+  padding:8px 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--soft);
+  color:var(--ink);
+  font-size:12px;
+}
+.model-caption{
+  margin-top:14px;
+  padding:13px 15px;
+  border-radius:15px;
+  background:var(--soft);
+  color:var(--muted);
+  font-size:13px;
+}
+.model-caption b{color:var(--ink)}
+
+/* evidence */
+.figure-layout{display:grid;grid-template-columns:1.35fr .65fr;gap:22px;align-items:start}
+.figure{
+  background:var(--paper);border:1px solid var(--line);border-radius:25px;
+  padding:14px;box-shadow:var(--shadow)
+}
+.figure img{width:100%;display:block;border-radius:14px;background:white}
+.caption{padding:14px 8px 5px}
+.caption b{display:block;margin-bottom:5px;font-size:18px}
+.caption p{margin:0;color:var(--muted);font-size:14px}
+.reading{display:grid;gap:12px}
+.reading-card{
+  background:var(--paper);border:1px solid var(--line);
+  border-radius:19px;padding:18px
+}
+.reading-card b{display:block;margin-bottom:5px}
+.reading-card p{margin:0;color:var(--muted);font-size:14px}
+.reading-card.warn{background:var(--red-soft);border-color:#d7e3f5}
+
+/* reliability */
+.gates{display:grid;gap:18px}
+.gate{
+  display:grid;grid-template-columns:190px 1fr 245px;gap:18px;align-items:center;
+  background:var(--paper);border:1px solid var(--line);
+  border-radius:24px;padding:23px;box-shadow:var(--shadow)
+}
+.gate-title{border-right:1px solid var(--line);padding-right:16px}
+.gate-title small{color:var(--blue);font-size:11px;font-weight:900;letter-spacing:.1em}
+.gate-title h3{margin:7px 0 0;font-size:22px}
+.gate-question b{display:block;margin-bottom:5px}
+.gate-question p{margin:0;color:var(--muted);font-size:14px}
+.gate-result{padding:16px;border-radius:17px;background:var(--soft)}
+.gate-result strong{display:block;color:var(--navy);font-size:24px}
+.gate-result span{color:var(--muted);font-size:12px}
+.cv-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;margin-top:22px}
+.cv-note{
+  background:var(--paper);border:1px solid var(--line);
+  border-radius:24px;padding:24px
+}
+.cv-note h3{margin:0 0 12px}
+.cv-note p{color:var(--muted);font-size:14px}
+.cv-note .final{padding:14px;border-radius:15px;background:var(--gold-soft);font-size:13px}
+
+/* final */
+.boundary{
+  background:var(--navy);color:white;border-radius:30px;padding:37px;
+  display:grid;grid-template-columns:190px 1fr;gap:28px
+}
+.boundary .no{color:#b9cdf0}
+.boundary h2{font-size:34px}
+.boundary p{margin:10px 0 0;color:#d9e3ef;font-size:17px}
+.tags{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+.tag{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.1);font-size:12px}
+
+@media(max-width:960px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .step{grid-template-columns:64px 1fr}
+  .judgment{grid-column:2}
+  .step details{grid-column:2}
+  .code-grid,.figure-layout,.cv-grid,.boundary{grid-template-columns:1fr}
+  .model-flow{grid-template-columns:1fr}
+  .input-stack,.layer-stack{grid-template-columns:1fr}
+  .flow-arrow{transform:rotate(90deg);padding:8px}
+  .model-controls{justify-content:flex-start}
+  .gate{grid-template-columns:1fr}
+  .gate-title{border-right:0;border-bottom:1px solid var(--line);padding:0 0 13px}
+}
+@media(max-width:640px){
+  .wrap{padding:0 18px}
+  section{padding:62px 0}
+  .head,.stats{grid-template-columns:1fr}
+  .head{gap:8px}
+  .step{grid-template-columns:1fr}
+  .judgment{grid-column:auto}
+  .step details,.model-visual{grid-column:1 / -1}
+}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="wrap">
+    <a class="brand" href="../index.html">陈幸雯 · Portfolio</a>
+    <small>项目二 · 机器学习可靠性验证</small>
+  </div>
+</div>
+
+<main class="wrap">
+<section class="hero" style="border-top:none">
+  <div class="eyebrow">CASE STUDY · MATERIALS MACHINE LEARNING</div>
+  <h1>
+    <span>将材料筛选需求转化为形成能预测任务</span>
+    <span>并验证模型是否具备前期筛选价值</span>
+  </h1>
+  <p class="lead">
+    基于公开材料数据库、成分与结构特征工程以及回归建模，
+    我建立了一套用于候选材料初步筛选的预测与可靠性验证流程。
+  </p>
+  <div class="stats">
+    <div class="stat"><strong>9546</strong><span>最终有效样本</span></div>
+    <div class="stat"><strong>135</strong><span>成分与结构特征</span></div>
+    <div class="stat"><strong>0.890</strong><span>独立测试集 R²</span></div>
+    <div class="stat"><strong>0.063</strong><span>MAE · eV/atom</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="head">
+    <div class="no">01 · DECISION WORKFLOW</div>
+    <div>
+      <h2>从实际筛选目标反推数据、特征、模型与验证设计</h2>
+      <p>每一个技术环节都对应一个明确判断，并由相应实现与结果证据支撑。</p>
+    </div>
+  </div>
+
+  <div class="workflow">
+    <article class="step">
+      <div class="step-index">01</div>
+      <div class="step-main">
+        <h3>明确模型在工作流中的角色</h3>
+        <p>候选材料数量较多，无法全部进入高精度计算和实验验证，因此需要建立前期筛选工具。</p>
+      </div>
+      <aside class="judgment">
+        <small>MY DECISION</small>
+        <b>模型用于缩小候选范围，而不是替代最终验证。</b>
+        <p>这一定位决定了项目必须同时评估预测性能与使用边界。</p>
+      </aside>
+    </article>
+
+    <article class="step">
+      <div class="step-index">02</div>
+      <div class="step-main">
+        <h3>定义数据范围与预测目标</h3>
+        <p>从 Materials Project 获取 Li–O 三元与四元氧化物数据，并以每原子形成能作为连续预测变量。</p>
+      </div>
+      <aside class="judgment">
+        <small>MY DECISION</small>
+        <b>数据范围必须与实际材料体系一致，预测目标必须能够支持稳定性初筛。</b>
+        <p>因此将任务定义为形成能回归，而不是分类问题。</p>
+      </aside>
+      <details>
+        <summary>查看数据获取与范围筛选实现</summary>
+        <div class="code-grid">
+<pre><code>with MPRester(get_materials_project_credential()) as mpr:
+    docs = mpr.summary.search(
+        elements=["Li", "O"],
+        num_elements=(3, 4),
+        band_gap=(0.1, None),
+        fields=[
+            "material_id",
+            "formula_pretty",
+            "structure",
+            "formation_energy_per_atom",
+        ],
+    )</code></pre>
+          <div class="code-note">
+            <small>IMPLEMENTATION EVIDENCE</small>
+            <b>API 数据获取与任务范围控制</b>
+            <p>根据研究对象设置元素体系、元素数量与 band gap 条件，并批量获取后续建模所需字段。</p>
+          </div>
+        </div>
+      </details>
+    </article>
+
+    <article class="step">
+      <div class="step-index">03</div>
+      <div class="step-main">
+        <h3>构建成分与结构联合特征</h3>
+        <p>使用 matminer 将化学组成、元素属性以及密度与堆积信息转化为 135 个模型输入。</p>
+      </div>
+      <aside class="judgment">
+        <small>MY DECISION</small>
+        <b>仅使用成分信息无法表达相同组成下的结构差异。</b>
+        <p>因此输入需要同时回答“材料由什么组成”和“这些元素如何排列”。</p>
+      </aside>
+      <details>
+        <summary>查看特征工程实现</summary>
+        <div class="code-grid">
+<pre><code>df = StrToComposition().featurize_dataframe(
+    df, "formula", ignore_errors=True
+)
+
+element_features = ElementProperty.from_preset("magpie")
+df = element_features.featurize_dataframe(
+    df, "composition", ignore_errors=True
+)
+
+density_features = DensityFeatures()
+df = density_features.featurize_dataframe(
+    df, "structure", ignore_errors=True
+)
+
+df = df.dropna()</code></pre>
+          <div class="code-note">
+            <small>IMPLEMENTATION EVIDENCE</small>
+            <b>领域对象到模型输入的结构化转换</b>
+            <p>将化学式和三维结构转换为可学习变量，并清理无法形成完整特征表示的样本。</p>
+          </div>
+        </div>
+      </details>
+    </article>
+
+    <article class="step">
+      <div class="step-index">04</div>
+      <div class="step-main">
+        <h3>建立非线性回归模型并控制训练风险</h3>
+        <p>使用 scikit-learn MLPRegressor 建立从 135 个材料特征到形成能的非线性映射。</p>
+      </div>
+      <aside class="judgment">
+        <small>MY DECISION</small>
+        <b>模型复杂度需要与样本规模匹配，并通过正则化与早停降低过拟合风险。</b>
+        <p>模型结构服务于任务，而不是为了增加技术复杂度。</p>
+      </aside>
+
+      <div class="model-visual">
+        <h4>模型结构与信息流</h4>
+        <div class="model-flow">
+          <div class="input-stack">
+            <div class="input-box"><b>成分特征</b><br><small>元素组成与化学属性</small></div>
+            <div class="input-box struct"><b>结构特征</b><br><small>密度、体积与堆积信息</small></div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="layer-box"><b>135</b><br><small>Input Features</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="layer-stack">
+            <div class="layer-box"><b>128</b><br><small>Hidden Layer 1</small></div>
+            <div class="layer-box"><b>64</b><br><small>Hidden Layer 2</small></div>
+            <div class="layer-box"><b>32</b><br><small>Hidden Layer 3</small></div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="output-box"><b>Formation Energy</b><br><small>Predicted eV/atom</small></div>
+        </div>
+        <div class="model-controls" aria-label="训练控制参数">
+          <span class="control-chip">ReLU</span>
+          <span class="control-chip">Adam</span>
+          <span class="control-chip">alpha = 0.01</span>
+          <span class="control-chip">Early Stopping</span>
+        </div>
+        <div class="model-caption">
+          <b>信息流：</b>成分与结构特征共同构成 135 维输入，经 128、64、32 三层非线性映射后输出每原子形成能预测值。
+        </div>
+      </div>
+
+      <details>
+        <summary>查看模型构建实现</summary>
+        <div class="code-grid">
+<pre><code>model = MLPRegressor(
+    hidden_layer_sizes=(128, 64, 32),
+    activation="relu",
+    solver="adam",
+    alpha=0.01,
+    early_stopping=True,
+    random_state=42,
+)
+
+model.fit(X_train_scaled, y_train)</code></pre>
+          <div class="code-note">
+            <small>IMPLEMENTATION EVIDENCE</small>
+            <b>模型结构、训练控制与可复现设置</b>
+            <p>明确隐藏层结构、激活函数、优化器、正则化强度与随机种子，并通过 early stopping 控制训练。</p>
+          </div>
+        </div>
+      </details>
+    </article>
+
+    <article class="step">
+      <div class="step-index">05</div>
+      <div class="step-main">
+        <h3>设计多层可靠性验证</h3>
+        <p>依次使用独立测试集、训练—测试表现比较和五折交叉验证检验预测有效性、泛化能力与重采样稳健性。</p>
+      </div>
+      <aside class="judgment">
+        <small>MY DECISION</small>
+        <b>单次测试结果不足以支持稳定性结论。</b>
+        <p>需要进一步识别过拟合风险与数据划分敏感性。</p>
+      </aside>
+      <details>
+        <summary>查看五折交叉验证实现</summary>
+        <div class="code-grid">
+<pre><code>cv_scores = cross_val_score(
+    model,
+    X_train_scaled,
+    y_train,
+    cv=KFold(
+        n_splits=5,
+        shuffle=True,
+        random_state=42,
+    ),
+    scoring="r2",
+    n_jobs=-1,
+)</code></pre>
+          <div class="code-note">
+            <small>IMPLEMENTATION EVIDENCE</small>
+            <b>重采样验证与数据划分敏感性检查</b>
+            <p>通过五组不同训练与验证划分观察模型表现波动，避免只依赖一次随机划分。</p>
+          </div>
+        </div>
+      </details>
+    </article>
+  </div>
+</section>
+
+<section>
+  <div class="head">
+    <div class="no">02 · RESULT EVIDENCE</div>
+    <div>
+      <h2>训练过程与测试集预测结果共同验证模型是否学习到主要规律</h2>
+      <p>训练损失用于判断收敛情况，实际值—预测值分布用于评价未见样本上的预测表现与异常偏差。</p>
+    </div>
+  </div>
+
+  <div class="figure-layout">
+    <figure class="figure">
+      <img src="../assets/images/ml_training_prediction.png" alt="训练损失以及实际形成能与预测形成能对比图">
+      <figcaption class="caption">
+        <b>训练收敛与独立测试集预测表现</b>
+        <p>测试集达到 R² = 0.8902、MAE = 0.0626 eV/atom。</p>
+      </figcaption>
+    </figure>
+    <div class="reading">
+      <article class="reading-card">
+        <b>训练过程</b>
+        <p>损失在训练初期快速下降并逐步稳定，表明模型训练已基本收敛。</p>
+      </article>
+      <article class="reading-card">
+        <b>主要分布</b>
+        <p>多数测试样本接近理想预测线，说明模型捕捉到了主数据分布中的形成能关系。</p>
+      </article>
+      <article class="reading-card warn">
+        <b>风险信号</b>
+        <p>少数样本仍出现明显偏差，说明总体指标不能代表所有材料类型的预测表现。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="head">
+    <div class="no">03 · RELIABILITY VALIDATION</div>
+    <div>
+      <h2>三层证据共同界定模型的可信程度与适用范围</h2>
+      <p>验证过程分别检验未见样本预测、训练—测试泛化差异以及不同数据划分下的性能波动。</p>
+    </div>
+  </div>
+
+  <div class="gates">
+    <article class="gate">
+      <div class="gate-title"><small>LEVEL 01</small><h3>预测有效性</h3></div>
+      <div class="gate-question"><b>模型能否预测未见样本？</b><p>在完全独立的测试集上评价预测表现。</p></div>
+      <div class="gate-result"><strong>R² = 0.8902</strong><span>MAE = 0.0626 eV/atom</span></div>
+    </article>
+    <article class="gate">
+      <div class="gate-title"><small>LEVEL 02</small><h3>泛化能力</h3></div>
+      <div class="gate-question"><b>是否存在明显过拟合？</b><p>比较训练集与测试集的性能差异。</p></div>
+      <div class="gate-result"><strong>ΔR² = 0.0070</strong><span>Train 0.8972 · Test 0.8902</span></div>
+    </article>
+    <article class="gate">
+      <div class="gate-title"><small>LEVEL 03</small><h3>重采样稳健性</h3></div>
+      <div class="gate-question"><b>不同数据划分下是否保持有效？</b><p>使用五折交叉验证检验性能波动。</p></div>
+      <div class="gate-result"><strong>0.8507 ± 0.0440</strong><span>Mean R² ± Std</span></div>
+    </article>
+  </div>
+
+  <div class="cv-grid">
+    <figure class="figure">
+      <img src="../assets/images/ml_cross_validation.png" alt="五折交叉验证结果图">
+      <figcaption class="caption">
+        <b>不同数据划分下的模型表现</b>
+        <p>五折 R² 范围为 0.7864–0.9009，显示模型总体有效，但仍存在数据划分敏感性。</p>
+      </figcaption>
+    </figure>
+    <article class="cv-note">
+      <h3>判断结论</h3>
+      <p>训练集与测试集表现接近，未观察到显著泛化落差；但不同折之间仍存在可见波动，因此不能仅依据单次最佳结果评价模型。</p>
+      <div class="final">模型具备候选材料前期筛选价值，但其预测结果仍需通过高精度计算或实验进一步验证。</div>
+    </article>
+  </div>
+</section>
+
+<section>
+  <div class="boundary">
+    <div class="no">FINAL JUDGMENT</div>
+    <div>
+      <h2>将模型定位为辅助筛选工具，而不是最终结论生成器</h2>
+      <p>该模型在独立测试与重采样验证中表现出较好的整体预测能力，可用于缩小后续高精度计算和实验验证的候选范围；异常偏差与数据划分波动则限定了其适用边界。</p>
+      <div class="tags">
+        <span class="tag">任务建模</span>
+        <span class="tag">API 数据获取</span>
+        <span class="tag">领域特征工程</span>
+        <span class="tag">回归建模</span>
+        <span class="tag">可靠性验证</span>
+        <span class="tag">边界判断</span>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+</body>
+</html>
