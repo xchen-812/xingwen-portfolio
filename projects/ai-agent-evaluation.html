@@ -247,7 +247,11 @@ h2{margin:0 0 12px;font-size:clamp(31px,4vw,45px);line-height:1.16;letter-spacin
 .tag2{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.1);font-size:12px}
 
 footer{padding:34px 0 50px;color:var(--muted);font-size:13px}
-
+.stat,.overview-card,.flow-card,.dimension,.test-lane,.test-item,.evidence-card,.compare,.compare-row,.defect,.boundary-card,.takeaway{transition:border-color .22s ease,box-shadow .22s ease,background-color .22s ease,transform .22s ease}
+.stat:hover,.overview-card:hover,.flow-card:hover,.dimension:hover,.test-lane:hover,.test-item:hover,.evidence-card:hover,.compare:hover,.compare-row:hover,.defect:hover,.boundary-card:hover{border-color:#8fb5ee;box-shadow:0 0 0 4px rgba(37,99,235,.07),var(--shadow);transform:translateY(-2px)}
+.stat:active,.overview-card:active,.flow-card:active,.dimension:active,.test-lane:active,.test-item:active,.evidence-card:active,.compare:active,.compare-row:active,.defect:active,.boundary-card:active{transform:translateY(0);box-shadow:0 0 0 6px rgba(37,99,235,.11),var(--shadow)}
+.evidence-card:hover .tag,.status:hover{box-shadow:0 0 0 4px rgba(37,99,235,.08)}
+@media (hover:none){.stat:active,.overview-card:active,.flow-card:active,.dimension:active,.test-lane:active,.test-item:active,.evidence-card:active,.compare:active,.compare-row:active,.defect:active,.boundary-card:active{border-color:#8fb5ee}}
 @media(max-width:1000px){
   .stats{grid-template-columns:repeat(2,1fr)}
   .research-flow{grid-template-columns:1fr}

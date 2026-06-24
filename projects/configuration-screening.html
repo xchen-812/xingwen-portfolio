@@ -191,6 +191,13 @@ summary{cursor:pointer;padding:18px 22px;font-weight:800}
 .capabilities{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
 .cap{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.1);font-size:12px}
 footer{padding:34px 0 50px;color:var(--muted);font-size:13px}
+.quick-card,.panel,.object,.factor,.stage,.branch,.chart-card,.q-logic,.figure,.finding,details,.detail-img,.thumb,.takeaway{transition:border-color .22s ease,box-shadow .22s ease,background-color .22s ease,transform .22s ease}
+.quick-card:hover,.panel:hover,.object:hover,.factor:hover,.stage:hover,.branch:hover,.chart-card:hover,.q-logic:hover,.figure:hover,.finding:hover,details:hover,.detail-img:hover,.thumb:hover{border-color:#8fb5ee;box-shadow:0 0 0 4px rgba(37,99,235,.07),var(--shadow);transform:translateY(-2px)}
+.quick-card:active,.panel:active,.object:active,.factor:active,.stage:active,.branch:active,.chart-card:active,.q-logic:active,.figure:active,.finding:active,details:active,.detail-img:active,.thumb:active{transform:translateY(0);box-shadow:0 0 0 6px rgba(37,99,235,.11),var(--shadow)}
+summary{transition:background-color .18s ease,color .18s ease}
+summary:hover,summary:focus-visible{background:#eaf3ff;color:var(--navy);outline:none}
+.thumb:hover img,.chart-card:hover img,.figure:hover img,.detail-img:hover img{box-shadow:0 0 0 3px rgba(37,99,235,.10)}
+@media (hover:none){.quick-card:active,.panel:active,.object:active,.factor:active,.stage:active,.branch:active,.chart-card:active,.q-logic:active,.figure:active,.finding:active,details:active,.detail-img:active,.thumb:active{border-color:#8fb5ee}}
 @media(max-width:900px){
   .links{display:none}
   .quick{grid-template-columns:1fr}

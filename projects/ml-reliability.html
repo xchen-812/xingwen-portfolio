@@ -227,6 +227,13 @@ pre{
 .tags{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
 .tag{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.1);font-size:12px}
 
+.stat,.step,.judgment,.model-visual,.input-box,.layer-box,.output-box,.control-chip,.model-caption,.figure,.reading-card,.gate,.gate-result,.cv-note,.boundary,details{transition:border-color .22s ease,box-shadow .22s ease,background-color .22s ease,transform .22s ease}
+.stat:hover,.step:hover,.judgment:hover,.model-visual:hover,.input-box:hover,.layer-box:hover,.output-box:hover,.control-chip:hover,.model-caption:hover,.figure:hover,.reading-card:hover,.gate:hover,.gate-result:hover,.cv-note:hover,details:hover{border-color:#8fb5ee;box-shadow:0 0 0 4px rgba(37,99,235,.07),var(--shadow);transform:translateY(-2px)}
+.stat:active,.step:active,.judgment:active,.model-visual:active,.input-box:active,.layer-box:active,.output-box:active,.control-chip:active,.model-caption:active,.figure:active,.reading-card:active,.gate:active,.gate-result:active,.cv-note:active,details:active{transform:translateY(0);box-shadow:0 0 0 6px rgba(37,99,235,.11),var(--shadow)}
+summary{transition:background-color .18s ease,color .18s ease}
+summary:hover,summary:focus-visible{background:#eaf3ff;color:var(--navy);outline:none}
+.figure:hover img{box-shadow:0 0 0 3px rgba(37,99,235,.10)}
+@media (hover:none){.stat:active,.step:active,.judgment:active,.model-visual:active,.input-box:active,.layer-box:active,.output-box:active,.control-chip:active,.model-caption:active,.figure:active,.reading-card:active,.gate:active,.gate-result:active,.cv-note:active,details:active{border-color:#8fb5ee}}
 @media(max-width:960px){
   .stats{grid-template-columns:repeat(2,1fr)}
   .step{grid-template-columns:64px 1fr}
