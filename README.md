@@ -2,12 +2,8 @@
 
 Personal portfolio website for AI testing, AI product experience, model evaluation, and data-driven problem solving.
 
-## Local preview
+## Public Site
 
-Open `index.html` directly, or run a local static server:
+[https://xchen-812.github.io/xingwen-portfolio/](https://xchen-812.github.io/xingwen-portfolio/)
 
-```bash
-python -m http.server 8000
-```
-
-Then visit `http://localhost:8000`.
+This repository is public for portfolio reading and GitHub Pages hosting.
